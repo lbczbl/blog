@@ -3,8 +3,10 @@
         <h1>博客总览</h1>
         <input type="text" v-model="search" placeholder="搜索">
         <div v-for="blog in filteredBlogs" class="single-blog">
+            <router-link :to="'/blog/'+blog.id">
             <h2 v-rainbow>{{blog.title | to-uppercase}}</h2>
-            <article>{{blog.body | snippet}}</article>
+            </router-link>
+            <article>{{blog.content | snippet}}</article>
         </div>
     </div>
 </template>
@@ -19,9 +21,21 @@ export default {
         }
     },
     created() {
-        this.$http.get('./../static/posts.json')
+        this.$http.get('https://blog-61fc3.firebaseio.com/posts.json')
         .then(function(data){
-            this.blogs=data.body.slice(0,10);
+            return data.json()
+            // console.log(data.json());
+            // this.blogs=data.body.slice(0,10);
+        })
+        .then(function(data){
+            var blogsArray= [];
+            for(let key in data){
+                // console.log(key);
+                // console.log(data[key]);
+                data[key].id=key;
+                blogsArray.push(data[key]);
+            }
+            this.blogs=blogsArray;
         })
     },
     computed: {
@@ -56,5 +70,14 @@ export default {
     margin: 20px 0;
     box-sizing: border-box;
     background: #eee;
+}
+#show-blogs a {
+    color: #444;
+    text-decoration: none;
+}
+input[type="text"]{
+    padding: 8px;
+    width: 100px;
+    box-sizing: border-box;
 }
 </style>
