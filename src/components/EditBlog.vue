@@ -6,7 +6,7 @@
       <input type="text" v-model="blog.title" required />
 
       <label>博客内容</label>
-      <textarea v-model="blog.content"></textarea>
+      <textarea v-model="blog.content"  ></textarea>
 
       <div id="checkboxes">
            <label>html</label>
